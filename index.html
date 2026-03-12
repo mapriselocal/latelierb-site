@@ -113,6 +113,9 @@
       height: auto;
       object-fit: contain;
       filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.22));
+      opacity: 0;
+      transform: translateY(14px) scale(0.985);
+      animation: logoReveal 1.2s ease-out forwards;
     }
 
     .nav-row {
@@ -478,6 +481,45 @@
       font-size: 13px;
     }
 
+    @keyframes logoReveal {
+      0% {
+        opacity: 0;
+        transform: translateY(14px) scale(0.985);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .gallery-toggle-wrap {
+      display: none;
+      justify-content: center;
+      margin-top: 26px;
+    }
+
+    .gallery-toggle {
+      min-width: 240px;
+      min-height: 48px;
+      padding: 0 20px;
+      border-radius: 12px;
+      border: 1px solid rgba(189, 160, 111, 0.48);
+      background: transparent;
+      color: var(--ivory);
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+    }
+
+    .gallery-toggle:hover {
+      transform: translateY(-1px);
+      background: rgba(255,255,255,0.04);
+      border-color: rgba(189, 160, 111, 0.72);
+    }
+
     @media (max-width: 980px) {
       .hero-grid,
       .gallery-grid,
@@ -520,6 +562,18 @@
     }
 
     @media (max-width: 720px) {
+      .gallery-grid {
+        display: none;
+      }
+
+      .gallery-grid.is-open {
+        display: grid;
+        grid-template-columns: 1fr;
+      }
+
+      .gallery-toggle-wrap {
+        display: flex;
+      }
       .container {
         width: min(var(--container), calc(100% - 26px));
       }
@@ -594,6 +648,12 @@
             <img src="salon-1.jpg" alt="Salon L'atelier B" />
           </div>
         </div>
+
+        <div class="gallery-toggle-wrap">
+          <button class="gallery-toggle" id="galleryToggle" type="button" aria-expanded="false" aria-controls="mobileGallery">
+            Découvrir la galerie
+          </button>
+        </div>
       </div>
     </section>
 
@@ -605,7 +665,7 @@
           <p>Une sélection de créations élégantes et raffinées.</p>
         </div>
 
-        <div class="gallery-grid">
+        <div class="gallery-grid" id="mobileGallery">
           <div class="gallery-item"><img src="gallery-1.jpg" alt="Réalisation onglerie 1" /></div>
           <div class="gallery-item"><img src="gallery-2.jpg" alt="Réalisation onglerie 2" /></div>
           <div class="gallery-item"><img src="gallery-3.jpg" alt="Réalisation onglerie 3" /></div>
@@ -726,5 +786,19 @@
       <div>Le Havre</div>
     </div>
   </footer>
+  <script>
+    (function () {
+      const button = document.getElementById('galleryToggle');
+      const gallery = document.getElementById('mobileGallery');
+
+      if (!button || !gallery) return;
+
+      button.addEventListener('click', function () {
+        const isOpen = gallery.classList.toggle('is-open');
+        button.textContent = isOpen ? 'Refermer la galerie' : 'Découvrir la galerie';
+        button.setAttribute('aria-expanded', String(isOpen));
+      });
+    })();
+  </script>
 </body>
 </html>
